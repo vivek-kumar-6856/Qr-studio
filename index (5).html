@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProQR Studio - Advanced Custom QR Code Generator with Logos & Templates</title>
+    
+    <!-- Open Graph (OG) Meta Tags for Social Media Sharing -->
+    <meta property="og:title" content="ProQR Studio - Create Custom QR Codes with Logos">
+    <meta property="og:description" content="Generate stunning, brand-tailored QR codes with templates, colors, and centered logos. Download in PNG, SVG & JPEG instantly!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:url" content="https://yourwebsite.com">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QR Code Styling Library CDN -->
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-800 bg-slate-950/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 p-2 rounded-xl text-white">
+                    <i class="fa-solid fa-qrcode text-xl"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent">ProQR Studio</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="shareModalToggle(true)" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-2">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>Share App</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column: Controls & Customization -->
+        <div class="lg:col-span-7 space-y-6 bg-slate-800/50 border border-slate-700/50 p-6 rounded-2xl shadow-xl backdrop-blur">
+            <h2 class="text-lg font-semibold border-b border-slate-700 pb-3 flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-indigo-400"></i> QR Code Configuration
+            </h2>
+
+            <!-- Content Input -->
+            <div class="space-y-2">
+                <label class="text-sm font-medium text-slate-300">QR Content (URL or Text)</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                        <i class="fa-solid fa-link"></i>
+                    </span>
+                    <input type="text" id="qrText" value="https://example.com" placeholder="https://yourwebsite.com" 
+                        class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-indigo-500 text-slate-100 transition">
+                </div>
+            </div>
+
+            <!-- Templates Section -->
+            <div class="space-y-2">
+                <label class="text-sm font-medium text-slate-300">Design Templates</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="applyTemplate('classic')" class="p-3 bg-slate-900 border border-slate-700 hover:border-indigo-500 rounded-xl text-center transition group">
+                        <div class="w-6 h-6 mx-auto mb-1 bg-black rounded border border-white"></div>
+                        <span class="text-xs font-medium text-slate-300 group-hover:text-white">Classic</span>
+                    </button>
+                    <button onclick="applyTemplate('modern')" class="p-3 bg-slate-900 border border-slate-700 hover:border-indigo-500 rounded-xl text-center transition group">
+                        <div class="w-6 h-6 mx-auto mb-1 bg-blue-600 rounded-full"></div>
+                        <span class="text-xs font-medium text-slate-300 group-hover:text-white">Modern Blue</span>
+                    </button>
+                    <button onclick="applyTemplate('cyberpunk')" class="p-3 bg-slate-900 border border-slate-700 hover:border-indigo-500 rounded-xl text-center transition group">
+                        <div class="w-6 h-6 mx-auto mb-1 bg-pink-500 rounded-md"></div>
+                        <span class="text-xs font-medium text-slate-300 group-hover:text-white">Cyberpunk</span>
+                    </button>
+                    <button onclick="applyTemplate('emerald')" class="p-3 bg-slate-900 border border-slate-700 hover:border-indigo-500 rounded-xl text-center transition group">
+                        <div class="w-6 h-6 mx-auto mb-1 bg-emerald-600 rounded-lg"></div>
+                        <span class="text-xs font-medium text-slate-300 group-hover:text-white">Emerald</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Colors Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-slate-300">Dot Color</label>
+                    <div class="flex items-center space-x-3 bg-slate-900 p-2 border border-slate-700 rounded-xl">
+                        <input type="color" id="dotColor" value="#000000" class="w-10 h-10 rounded cursor-pointer bg-transparent">
+                        <span id="dotColorVal" class="text-xs text-slate-400 font-mono">#000000</span>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-slate-300">Background Color</label>
+                    <div class="flex items-center space-x-3 bg-slate-900 p-2 border border-slate-700 rounded-xl">
+                        <input type="color" id="bgColor" value="#ffffff" class="w-10 h-10 rounded cursor-pointer bg-transparent">
+                        <span id="bgColorVal" class="text-xs text-slate-400 font-mono">#ffffff</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dot & Corner Styles -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-slate-300">Dots Style Pattern</label>
+                    <select id="dotType" class="w-full py-2.5 px-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-indigo-500 text-slate-100">
+                        <option value="square">Square</option>
+                        <option value="dots">Dots</option>
+                        <option value="rounded">Rounded</option>
+                        <option value="classy">Classy</option>
+                        <option value="classy-rounded">Classy Rounded</option>
+                        <option value="extra-rounded">Extra Rounded</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-slate-300">Corner Square Style</label>
+                    <select id="cornerStyle" class="w-full py-2.5 px-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-indigo-500 text-slate-100">
+                        <option value="square">Square</option>
+                        <option value="dot">Dot</option>
+                        <option value="extra-rounded">Extra Rounded</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Center Logo Upload -->
+            <div class="space-y-2">
+                <label class="text-sm font-medium text-slate-300">Center Logo Image</label>
+                <div class="flex items-center justify-between bg-slate-900 border border-slate-700 border-dashed p-4 rounded-xl">
+                    <div class="flex items-center space-x-3">
+                        <div id="logoPreviewContainer" class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center overflow-hidden border border-slate-700">
+                            <i class="fa-solid fa-image text-slate-500" id="noLogoIcon"></i>
+                            <img id="logoThumb" class="w-full h-full object-cover hidden" alt="Logo preview">
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium text-slate-200">Upload Logo (PNG/JPG)</p>
+                            <p class="text-[10px] text-slate-400">Will be embedded in the center</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <label class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition">
+                            Browse <input type="file" id="logoInput" accept="image/*" class="hidden">
+                        </label>
+                        <button onclick="removeLogo()" id="removeLogoBtn" class="hidden bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 px-2.5 py-1.5 rounded-lg text-xs transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Live Preview & Downloads -->
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
+            <div class="bg-slate-800/50 border border-slate-700/50 p-6 rounded-2xl shadow-xl backdrop-blur flex flex-col items-center justify-center text-center">
+                <h3 class="text-sm font-medium text-slate-400 uppercase tracking-wider mb-4">Live Preview</h3>
+                
+                <!-- QR Output Container -->
+                <div id="qr-canvas-container" class="bg-white p-4 rounded-2xl shadow-2xl inline-block transition-all transform hover:scale-[1.02]">
+                    <div id="qr-canvas"></div>
+                </div>
+
+                <p class="text-xs text-slate-400 mt-4">Scan with any smartphone camera to test instantly.</p>
+            </div>
+
+            <!-- Download Action Panel -->
+            <div class="bg-slate-800/50 border border-slate-700/50 p-6 rounded-2xl shadow-xl backdrop-blur space-y-4">
+                <h3 class="text-sm font-semibold text-slate-300">Download High-Resolution</h3>
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="downloadQR('png')" class="bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 px-4 rounded-xl text-xs font-semibold transition shadow-lg shadow-indigo-600/20 flex flex-col items-center justify-center gap-1">
+                        <i class="fa-solid fa-download"></i> PNG
+                    </button>
+                    <button onclick="downloadQR('jpeg')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 py-2.5 px-4 rounded-xl text-xs font-semibold transition flex flex-col items-center justify-center gap-1">
+                        <i class="fa-solid fa-download"></i> JPEG
+                    </button>
+                    <button onclick="downloadQR('svg')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 py-2.5 px-4 rounded-xl text-xs font-semibold transition flex flex-col items-center justify-center gap-1">
+                        <i class="fa-solid fa-download"></i> SVG
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Social Share Modal -->
+    <div id="shareModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 max-w-md w-full p-6 rounded-2xl shadow-2xl space-y-6 relative">
+            <button onclick="shareModalToggle(false)" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="space-y-2 text-center">
+                <h3 class="text-xl font-bold text-white">Share ProQR Studio</h3>
+                <p class="text-xs text-slate-400">Share this application on your social channels with our embedded Open Graph card preview.</p>
+            </div>
+
+            <!-- OG Image Preview card mock -->
+            <div class="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden text-left">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop" class="w-full h-32 object-cover" alt="OG Preview">
+                <div class="p-3 space-y-1">
+                    <p class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">yourwebsite.com</p>
+                    <h4 class="text-xs font-bold text-slate-200">ProQR Studio - Create Custom QR Codes with Logos</h4>
+                    <p class="text-[10px] text-slate-400 line-clamp-1">Generate stunning, brand-tailored QR codes with templates, colors, and centered logos.</p>
+                </div>
+            </div>
+
+            <!-- Social Share Buttons -->
+            <div class="grid grid-cols-2 gap-3">
+                <a id="shareTwitter" href="#" target="_blank" class="bg-[#1DA1F2]/20 hover:bg-[#1DA1F2]/30 text-[#1DA1F2] border border-[#1DA1F2]/30 py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center space-x-2 transition">
+                    <i class="fa-brands fa-twitter"></i> <span>Twitter / X</span>
+                </a>
+                <a id="shareFacebook" href="#" target="_blank" class="bg-[#4267B2]/20 hover:bg-[#4267B2]/30 text-[#4267B2] border border-[#4267B2]/30 py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center space-x-2 transition">
+                    <i class="fa-brands fa-facebook"></i> <span>Facebook</span>
+                </a>
+                <a id="shareLinkedIn" href="#" target="_blank" class="bg-[#0A66C2]/20 hover:bg-[#0A66C2]/30 text-[#0A66C2] border border-[#0A66C2]/30 py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center space-x-2 transition">
+                    <i class="fa-brands fa-linkedin"></i> <span>LinkedIn</span>
+                </a>
+                <button onclick="copyAppLink()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center space-x-2 transition">
+                    <i class="fa-solid fa-copy"></i> <span id="copyTextBtn">Copy Link</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-slate-500 border-t border-slate-800">
+        &copy; 2026 ProQR Studio. Built with pure JavaScript & Tailwind CSS.
+    </footer>
+
+    <!-- App Logic Script -->
+    <script>
+        // Initialize QR Code Styling instance
+        const qrCode = new QRCodeStyling({
+            width: 250,
+            height: 250,
+            type: "canvas",
+            data: "https://example.com",
+            dotsOptions: {
+                color: "#000000",
+                type: "square"
+            },
+            backgroundOptions: {
+                color: "#ffffff",
+            },
+            imageOptions: {
+                crossOrigin: "anonymous",
+                margin: 8,
+                imageSize: 0.4,
+                hideBackgroundDots: true
+            },
+            cornersSquareOptions: {
+                type: "square",
+                color: "#000000"
+            },
+            cornersDotOptions: {
+                type: "square",
+                color: "#000000"
+            }
+        });
+
+        // Append QR code canvas on load
+        window.addEventListener('DOMContentLoaded', () => {
+            qrCode.append(document.getElementById("qr-canvas"));
+            setupShareLinks();
+        });
+
+        let logoDataUrl = null;
+
+        // Element Bindings
+        const qrTextInput = document.getElementById('qrText');
+        const dotColorInput = document.getElementById('dotColor');
+        const bgColorInput = document.getElementById('bgColor');
+        const dotTypeSelect = document.getElementById('dotType');
+        const cornerStyleSelect = document.getElementById('cornerStyle');
+        const logoInput = document.getElementById('logoInput');
+        const logoThumb = document.getElementById('logoThumb');
+        const noLogoIcon = document.getElementById('noLogoIcon');
+        const removeLogoBtn = document.getElementById('removeLogoBtn');
+
+        // Real-time Event Listeners
+        [qrTextInput, dotColorInput, bgColorInput, dotTypeSelect, cornerStyleSelect].forEach(element => {
+            element.addEventListener('input', updateQR);
+            element.addEventListener('change', updateQR);
+        });
+
+        // Update hex indicators
+        dotColorInput.addEventListener('input', (e) => document.getElementById('dotColorVal').innerText = e.target.value);
+        bgColorInput.addEventListener('input', (e) => document.getElementById('bgColorVal').innerText = e.target.value);
+
+        function updateQR() {
+            qrCode.update({
+                data: qrTextInput.value || "https://example.com",
+                dotsOptions: {
+                    color: dotColorInput.value,
+                    type: dotTypeSelect.value
+                },
+                backgroundOptions: {
+                    color: bgColorInput.value
+                },
+                cornersSquareOptions: {
+                    type: cornerStyleSelect.value,
+                    color: dotColorInput.value
+                },
+                cornersDotOptions: {
+                    type: cornerStyleSelect.value === 'square' ? 'square' : 'dot',
+                    color: dotColorInput.value
+                },
+                image: logoDataUrl
+            });
+        }
+
+        // Logo Upload Handler
+        logoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    logoDataUrl = uploadEvent.target.result;
+                    logoThumb.src = logoDataUrl;
+                    logoThumb.classList.remove('hidden');
+                    noLogoIcon.classList.add('hidden');
+                    removeLogoBtn.classList.remove('hidden');
+                    updateQR();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function removeLogo() {
+            logoDataUrl = null;
+            logoInput.value = '';
+            logoThumb.src = '';
+            logoThumb.classList.add('hidden');
+            noLogoIcon.classList.remove('hidden');
+            removeLogoBtn.classList.add('hidden');
+            updateQR();
+        }
+
+        // Template Presets
+        function applyTemplate(templateName) {
+            if (templateName === 'classic') {
+                dotColorInput.value = '#000000';
+                bgColorInput.value = '#ffffff';
+                dotTypeSelect.value = 'square';
+                cornerStyleSelect.value = 'square';
+            } else if (templateName === 'modern') {
+                dotColorInput.value = '#2563eb';
+                bgColorInput.value = '#f8fafc';
+                dotTypeSelect.value = 'rounded';
+                cornerStyleSelect.value = 'extra-rounded';
+            } else if (templateName === 'cyberpunk') {
+                dotColorInput.value = '#ec4899';
+                bgColorInput.value = '#0f172a';
+                dotTypeSelect.value = 'dots';
+                cornerStyleSelect.value = 'dot';
+            } else if (templateName === 'emerald') {
+                dotColorInput.value = '#059669';
+                bgColorInput.value = '#ecfdf5';
+                dotTypeSelect.value = 'classy-rounded';
+                cornerStyleSelect.value = 'square';
+            }
+            // Trigger value updates
+            document.getElementById('dotColorVal').innerText = dotColorInput.value;
+            document.getElementById('bgColorVal').innerText = bgColorInput.value;
+            updateQR();
+        }
+
+        // Download Functions
+        function downloadQR(extension) {
+            qrCode.download({ name: "qr-code", extension: extension });
+        }
+
+        // Modal Handler
+        function shareModalToggle(show) {
+            const modal = document.getElementById('shareModal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Setup social share link intents
+        function setupShareLinks() {
+            const currentUrl = encodeURIComponent(window.location.href);
+            const shareText = encodeURIComponent("Check out this amazing custom QR code generator app with logos and templates!");
+
+            document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?text=${shareText}&url=${currentUrl}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+            document.getElementById('shareLinkedIn').href = `https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}`;
+        }
+
+        function copyAppLink() {
+            navigator.clipboard.writeText(window.location.href);
+            const btnText = document.getElementById('copyTextBtn');
+            btnText.innerText = "Copied!";
+            setTimeout(() => btnText.innerText = "Copy Link", 2000);
+        }
+    </script>
+</body>
+</html>
